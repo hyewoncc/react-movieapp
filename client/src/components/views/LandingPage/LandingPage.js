@@ -13,7 +13,7 @@ function LandingPage() {
 
 
     useEffect(() => {
-        const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=em-US&page=1`;
+        const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
         fetchMovies(endpoint)
     }, [])
 
@@ -55,6 +55,7 @@ function LandingPage() {
                     {Movies && Movies.map((movie, index) => (
                         <React.Fragment key={index}>
                             <GridCards 
+                                landingPage
                                 image={movie.poster_path ?
                                     `${IMAGE_BASE_URL}w500${movie.poster_path}` : null}
                                 movieId={movie.id}
