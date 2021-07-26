@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import Axios from 'axios'
-import { response } from 'express'
+import { FAVORITE_SERVER } from '../../../Config.js';
+
 
 function Favorite(props) {
 
@@ -18,8 +19,10 @@ function Favorite(props) {
             movieId
         }
 
-        Axios.post('/api/favorite/favoriteNumber', variables)
+        Axios.post(`${FAVORITE_SERVER}/favoriteNumber`, variables)
             .then(response => {
+                console.log(response.data)
+                
                 if(response.data.success) {
 
                 } else {

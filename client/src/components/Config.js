@@ -1,5 +1,6 @@
 //SERVER ROUTES
 export const USER_SERVER = '/api/users';
+export const FAVORITE_SERVER = '/api/favorite';
 
 export const API_URL = 'http://api.themoviedb.org/3/';
 
