@@ -15,4 +15,22 @@ router.post('/favoriteNumber', (req, res) => {
         })
 })
 
+router.post('/favorited', (req, res) => {
+
+    //이 영화를 Favorite 리스트에 넣었는지 DB에서 가져오기 
+    Favorite.find({ "movieId": req.body.movieId, "userFrom": req.body.userFrom })
+        .exec(( err, info) => {
+            //에러가 날 경우 에러 정보를 클라이언트에 보내줌 
+            if(err) return res.status(400).send(err)
+
+            let result = false;
+            if(info.length !== 0 ) {
+                result = true
+            }
+
+            //성공 상태, 여부와 조회된 자료 배열 길이 보내기 
+            res.status(200).json({ success:true, favorited: result })
+        })
+})
+
 module.exports = router;
