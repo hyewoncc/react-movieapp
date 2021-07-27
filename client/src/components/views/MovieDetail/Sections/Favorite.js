@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Axios from 'axios'
 import { FAVORITE_SERVER } from '../../../Config.js';
-
+import { Button } from 'antd'
 
 function Favorite(props) {
 
@@ -13,14 +13,17 @@ function Favorite(props) {
 
     const [FavoriteNumber, setFavoriteNumber] = useState(0)
     const [Favorited, setFavorited] = useState(false)
+    
+    let variables = {
+        userFrom: userFrom,
+        movieId: movieId,
+        movieTitle: movieTitle,
+        moviePost: moviePost,
+        movieRunTime: movieRunTime
+    }
 
     // 로딩 직후 Favorite 수를 얻기 위함 
     useEffect(() => {
-        
-        let variables = {
-            userFrom,
-            movieId
-        }
 
         Axios.post(`${FAVORITE_SERVER}/favoriteNumber`, variables)
             .then(response => {
@@ -42,9 +45,35 @@ function Favorite(props) {
             })
     }, [])
 
+    const onClickFavorite = () => {
+        //현재 Favorited 인지 조건
+        if(Favorited) {
+            Axios.post(`${FAVORITE_SERVER}/removeFromFavorite`, variables)
+                .then(response => {
+                    if(response.data.success) {
+                        setFavoriteNumber(FavoriteNumber - 1)
+                        setFavorited(!Favorited)
+                    } else {
+                        alert('Favorite 리스트 삭제 실패했습니다.')
+                    }
+                })
+
+        } else {
+            Axios.post(`${FAVORITE_SERVER}/addToFavorite`, variables)
+                .then(response => {
+                    if (response.data.success) {
+                        setFavoriteNumber(FavoriteNumber + 1)
+                        setFavorited(!Favorited)
+                    } else {
+                        alert('Favorite 리스트 추가에 실패했습니다.')
+                    }
+                })
+        }
+    }
+
     return (
         <div>
-            <button>{Favorited ? " Not Favorite " : " Add to Favorite "} {FavoriteNumber} </button>
+            <Button onClick={onClickFavorite} >{Favorited ? " Not Favorite " : " Add to Favorite "} {FavoriteNumber} </Button>
         </div>
     )
 }
