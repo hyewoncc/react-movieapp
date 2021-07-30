@@ -3,6 +3,7 @@ import { API_URL, API_KEY, IMAGE_BASE_URL } from '../../Config';
 import MainImage from '../LandingPage/Sections/MainImage'
 import MovieInfo from './Sections/MovieInfo';
 import GridCards from '../commons/GridCards';
+import CommentCard from '../commons/CommentCard';
 import { Row } from 'antd';
 import Favorite from './Sections/Favorite';
 
@@ -12,12 +13,15 @@ function MovieDetail(props) {
     const [Movie, setMovie] = useState([])
     const [Casts, setCasts] = useState([])
     const [ActorToggle, setActorToggle] = useState(false)
+    const [Comments, setComments] = useState([])
 
     useEffect(() => {
         
         let endpointCrew = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`
 
         let endpointInfo = `${API_URL}movie/${movieId}?api_key=${API_KEY}`
+
+        let endpointComment = `${API_URL}movie/${movieId}/reviews?api_key=${API_KEY}`
 
         fetch(endpointInfo)
             .then(response => response.json())
@@ -31,12 +35,17 @@ function MovieDetail(props) {
                 setCasts(response.cast)
             })
 
+        fetch(endpointComment)
+            .then(response => response.json())
+            .then(response => {
+                setComments(response.results)
+            })
+
     }, [])
 
     const toggleActorView = () => {
         setActorToggle(!ActorToggle)
     }
-    
 
     return (
         <div>
@@ -60,6 +69,22 @@ function MovieDetail(props) {
                 <MovieInfo
                     movie={Movie}
                 />
+
+                {/* Comments */}
+                <h3>Movie Reviews</h3>
+                <div>
+                    {Comments && Comments.map((comment, index) => (
+                        <React.Fragment key={index}>
+                            <CommentCard 
+                                picture = {comment.author_details.avatar_path.startsWith('/https://secure') ? 
+                                `${comment.author_details.avatar_path.substring(1)}` : `${IMAGE_BASE_URL}w500${comment.author_details.avatar_path}`} 
+                                name = {comment.author} 
+                                content = {comment.content}
+                                date = {comment.updated_at}
+                            />
+                        </React.Fragment>
+                    ))}
+                </div>
 
                 <br/>
                 {/* Actors Grid */}
