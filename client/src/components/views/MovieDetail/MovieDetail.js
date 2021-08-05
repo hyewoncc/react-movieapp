@@ -4,7 +4,7 @@ import MainImage from '../LandingPage/Sections/MainImage'
 import MovieInfo from './Sections/MovieInfo';
 import GridCards from '../commons/GridCards';
 import CommentCard from '../commons/CommentCard';
-import { Row } from 'antd';
+import { Row, Comment, Tooltip, List } from 'antd';
 import Favorite from './Sections/Favorite';
 
 function MovieDetail(props) {
@@ -73,17 +73,25 @@ function MovieDetail(props) {
                 {/* Comments */}
                 <h3>Movie Reviews</h3>
                 <div>
-                    {Comments && Comments.map((comment, index) => (
-                        <React.Fragment key={index}>
-                            <CommentCard 
-                                picture = {comment.author_details.avatar_path.startsWith('/https://secure') ? 
-                                `${comment.author_details.avatar_path.substring(1)}` : `${IMAGE_BASE_URL}w500${comment.author_details.avatar_path}`} 
-                                name = {comment.author} 
-                                content = {comment.content}
-                                date = {comment.updated_at}
-                            />
-                        </React.Fragment>
-                    ))}
+                    {Comments && 
+                        <List 
+                            dataSource = {Comments}
+                            renderItem = {comment => (
+                                <li>
+                                    <Comment
+                                        author = {comment.author}
+                                        avatar = {comment.author_details.avatar_path.startsWith('/https://secure') ? 
+                                        `${comment.author_details.avatar_path.substring(1)}` : `${IMAGE_BASE_URL}w500${comment.author_details.avatar_path}`} 
+                                        content = {comment.content}
+                                        datetime = {comment.updated_at}
+                                    />
+                                </li>
+                            )}
+                        />
+                    }
+                    {Comments.length === 0 && 
+                        <h4>No reviews yet</h4>
+                    }
                 </div>
 
                 <br/>
