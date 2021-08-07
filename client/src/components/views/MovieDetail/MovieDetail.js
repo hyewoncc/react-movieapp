@@ -82,8 +82,11 @@ function MovieDetail(props) {
                                         author = {comment.author}
                                         avatar = {comment.author_details.avatar_path.startsWith('/https://secure') ? 
                                         `${comment.author_details.avatar_path.substring(1)}` : `${IMAGE_BASE_URL}w500${comment.author_details.avatar_path}`} 
-                                        content = {comment.content}
+                                        content = {comment.content.length > 300 ? 
+                                            (comment.content.substring(0, 300) + '...') : comment.content}
                                         datetime = {comment.updated_at}
+                                        actions = {comment.content.length > 300 ? 
+                                        [<span>Read more</span>] : null}
                                     />
                                 </li>
                             )}
