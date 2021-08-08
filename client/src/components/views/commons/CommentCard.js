@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Comment, Avatar } from 'antd'
+import { Comment, Avatar, Tooltip } from 'antd'
 import { IMAGE_BASE_URL } from '../../Config'
+import moment from 'moment'
 
 function CommentCard(props) {
 
@@ -20,7 +21,8 @@ function CommentCard(props) {
                 } 
             content = {props.content.length > 300 && ReadMore ? 
                 (props.content.substring(0, 300) + '...') : props.content}
-            datetime = {props.updated_at}
+            datetime = { <Tooltip> <span>{ moment(props.datetime.substring(0,10), 'YYYY-MM-DD').fromNow() }</span>
+                        </Tooltip> }
             actions = {props.content.length > 300 ? 
                 [<span onClick = {openReadMore}>{ReadMore ? 'Read More' : 'Close'}</span>] : null}
         />
