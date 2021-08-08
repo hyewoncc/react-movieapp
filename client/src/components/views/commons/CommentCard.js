@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Comment } from 'antd'
-import { IMAGE_BASE_URL } from '../../Config';
+import { Comment, Avatar } from 'antd'
+import { IMAGE_BASE_URL } from '../../Config'
 
 function CommentCard(props) {
 
@@ -12,9 +12,12 @@ function CommentCard(props) {
 
     return (
         <Comment
-            author = {props.author}
-            avatar = {props.avatar_path.startsWith('/https://secure') ? 
-                `${props.avatar_path.substring(1)}` : `${IMAGE_BASE_URL}w500${props.avatar_path}`} 
+            author = { props.author }
+            avatar = { props.avatar_path ? 
+                        props.avatar_path.startsWith('/https://secure') ? 
+                        `${props.avatar_path.substring(1)}` : `${IMAGE_BASE_URL}w500${props.avatar_path}` : 
+                    <Avatar>{ props.author.substring(0, 1)}</Avatar>
+                } 
             content = {props.content.length > 300 && ReadMore ? 
                 (props.content.substring(0, 300) + '...') : props.content}
             datetime = {props.updated_at}
