@@ -3,9 +3,9 @@ import { API_URL, API_KEY, IMAGE_BASE_URL } from '../../Config';
 import MainImage from '../LandingPage/Sections/MainImage'
 import MovieInfo from './Sections/MovieInfo';
 import GridCards from '../commons/GridCards';
-import CommentCard from '../commons/CommentCard';
 import { Row, Comment, Tooltip, List } from 'antd';
 import Favorite from './Sections/Favorite';
+import CommentCard from '../commons/CommentCard';
 
 function MovieDetail(props) {
 
@@ -78,15 +78,11 @@ function MovieDetail(props) {
                             dataSource = {Comments}
                             renderItem = {comment => (
                                 <li>
-                                    <Comment
+                                    <CommentCard 
                                         author = {comment.author}
-                                        avatar = {comment.author_details.avatar_path.startsWith('/https://secure') ? 
-                                        `${comment.author_details.avatar_path.substring(1)}` : `${IMAGE_BASE_URL}w500${comment.author_details.avatar_path}`} 
-                                        content = {comment.content.length > 300 ? 
-                                            (comment.content.substring(0, 300) + '...') : comment.content}
+                                        avatar_path = {comment.author_details.avatar_path}
+                                        content = {comment.content}
                                         datetime = {comment.updated_at}
-                                        actions = {comment.content.length > 300 ? 
-                                        [<span>Read more</span>] : null}
                                     />
                                 </li>
                             )}
